@@ -24,7 +24,7 @@ router.route('/makepayment').post(makePaymentRequest)
 router.route('/misspayment').post(missPaymentRequest)
 
 router.route('/update').post(/*protect,*/updateRequest)
-router.route('/updaterequestDetails').post(/*protect,*/updateRequestDetails)
+router.route('/updaterequestdetails').post(/*protect,*/updateRequestDetails)
 
 router.route('/all').get(protect,getAllRequests)
 router.route('/oneagent').get(getAllRequestsForOneAgent)
