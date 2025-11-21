@@ -527,7 +527,7 @@ const updateRequestDetails = asyncHandler(async (req,res)=>{
      
        request.paymentDueDate = req.body.paymentDueDate
        request.paymentTerms  = req.body.paymentTerms
-       request.status = request.body.status
+       request.status = req.body.status
       
     request.updatedAt = request.updatedAt = new Date().toISOString();
 
