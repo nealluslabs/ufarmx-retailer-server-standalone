@@ -520,16 +520,18 @@ const updateRequestDetails = asyncHandler(async (req,res)=>{
  
   const objectId = new mongoose.Types.ObjectId(req.body._id)
   let request= await Request.findById(objectId)
-  console.log('BACKEND FOR UPDATING REQUEST DETAILS HAS BEEN REACHED--->')
+  console.log('BACKEND FOR UPDATING REQUEST DETAILS HAS BEEN REACHED--->',req.body)
+  
  // console.log('THE RESPONSE TO UPDATE HAS BEEN FOUND',request)
    if(request){
+   
      //we are only updating due date, status and updated at here
      
-       request.paymentDueDate = req.body.paymentDueDate
-       request.paymentTerms  = req.body.paymentTerms
-       request.status = req.body.status
+       request.paymentDueDate = req.body.paymentDueDate && req.body.paymentDueDate
+       request.paymentTerms  = req.body.paymentTerms && req.body.paymentTerms
+       request.status = req.body.status && req.body.status 
       
-    request.updatedAt = request.updatedAt = new Date().toISOString();
+    request.updatedAt =  new Date().toISOString();
 
     if (request.status === "Approved" || request.status === "approved") {
       // ✅ Call approveRequest method here
@@ -538,7 +540,7 @@ const updateRequestDetails = asyncHandler(async (req,res)=>{
 
 
       
-   //console.log('THE RESPONSE TO UPDATE HAS BEEN FOUND',Request)
+   
      /*const updatedRequest =*/ await request.save()
      res.status(200).json({message:"success"})
    }else{

@@ -10,16 +10,30 @@ const requestsSchema =  mongoose.Schema({
    
 
 
-       /* requestObject:{type: mongoose.Schema.Types.Mixed ,required:false },
+       requestObject:{type: mongoose.Schema.Types.Mixed ,required:false },
         
         is_deleted:{type:Boolean ,required:false },
 
         last_updated_by:{type:mongoose.Schema.Types.ObjectId,required:false},
         form_id:{type:mongoose.Schema.Types.ObjectId,required:false},
-        admin_user_id:{type:mongoose.Schema.Types.ObjectId,required:false},
-        agent_user_id:{type:mongoose.Schema.Types.ObjectId,required:false},
-        agentName:{type:String,required:false},
-        formName:{type:String,required:false},*/
+        retailer_id:{type:mongoose.Schema.Types.ObjectId,required:false},
+       retailer_farmer_id:{type:mongoose.Schema.Types.ObjectId,required:false},
+      
+        totalAmount:{type:String,required:false},
+        status:{type:String,required:false},
+       invoice:{type:String,required:false},
+       name:{type:String,required:false},
+      paymentTerms:{type:String,required:false},
+      farmerName:{type:String,required:false},
+      maturityDate : { type : Date, default: Date.now },
+      paymentDueDate : { type : Date, default: Date.now },
+      approvedDate : { type : Date, default: Date.now },
+      farmerId: {type: Number ,required:false},
+      products: { type: [String], required: false },
+
+
+
+        
         
         
 },{timestamps:true,strict:false /*you want a createdAt? you add timestamps:true*/})
