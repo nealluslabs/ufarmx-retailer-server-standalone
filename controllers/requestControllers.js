@@ -137,30 +137,41 @@ console.log(" last 3 requests is --->",requests)
 //@desc  Create a request
 //@route POST /api/requests
 //@access Private/Admin
-const createRequest = asyncHandler(async (req,res)=>{
-  res.header("Access-Control-Allow-Origin","*")
-   const request = new Request({
-   totalAmount : fields.totalAmount,
-   status : "Pending",
-   paymentDueDate : fields.paymentDueDate ,//try mongoose.typesDate or sth
-   approvedDate : fields.approvedDate, //same as above comments
-   paymentTerms : fields.paymentTerms,
-   paymentsMade:[]
-    
-   })
+const createRequest = asyncHandler(async (req, res) => {
+    const { 
+        totalAmount, paymentDueDate, approvedDate, paymentTerms,
+        unitQuantity, firstName, lastName, phone, locationName, 
+        _id, user_id,
+    } = req.body;
 
-   const createdRequest = await request.save()
+    const request = new Request({
+        totalAmount: totalAmount, // Assuming key in body is totalAmount
+        status: "Pending",
+        paymentDueDate: paymentDueDate,
+        approvedDate: approvedDate,
+        paymentTerms: paymentTerms,
+        quantity: unitQuantity, 
+        farmerName: firstName && lastName ? `${firstName} ${lastName}` : "No Name Provided",
+        
+        phone_number: phone,
+        location: locationName,
+        productId: _id, 
+        farmerId: user_id,
+        paymentsMade: []
+    });
 
+    const createdRequest = await request.save();
 
-  
-    //res.status(201).json(createdRequest)
-    if(createdRequest){
-    res.status(200).json({message:"success"})
-    }else{
-      res.status(200).json({message:"failure"})
+    if (createdRequest) {
+        res.status(201).json({ 
+          status:201,
+            message: "Request successfully created", 
+            request: createdRequest ,
+        });
+    } else {
+       res.status(500).json({ message: "Request creation failed unexpectedly" });
     }
-})
-
+});
 
 
 //@desc make a payment on a request

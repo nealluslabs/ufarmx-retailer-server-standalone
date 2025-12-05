@@ -28,8 +28,14 @@ const requestsSchema =  mongoose.Schema({
       maturityDate : { type : Date, default: Date.now },
       paymentDueDate : { type : Date, default: Date.now },
       approvedDate : { type : Date, default: Date.now },
-      farmerId: {type: Number ,required:false},
+      farmerId: {type: String ,required:false},
       products: { type: [String], required: false },
+      productId: {type: mongoose.Schema.Types.ObjectId,required:false},
+      productName: {type: String,required:false},
+      quantity: {type: String,required:false},
+      location: {type: String,required:false},
+      phone_number: {type: String,required:false},
+      paymentsMade:{type:Array,required:false,default:[]}
 
 
 
