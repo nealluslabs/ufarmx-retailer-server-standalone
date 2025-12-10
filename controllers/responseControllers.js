@@ -6,6 +6,8 @@ import asyncHandler from 'express-async-handler'
 //const asyncHandler = require('express-async-handler')
 import mongoose from 'mongoose'
 import RetailerFarmer from '../models/retailerFarmerModel.js'
+import axios  from 'axios';
+import Sendchamp from "sendchamp-sdk";
 //const mongoose = require('mongoose')
 
 //@desc  Fetch all responses in pages
@@ -146,9 +148,11 @@ const createResponse = asyncHandler(async (req,res)=>{
    //ACCOUNTING FOR ALL SORTS OF FARMER INTAKE FORM AND THEN ADDING FARMERS
    if(req.body.form_id === "65a59487c662a50026d882b4" ||
    req.body.form_id === "64943746c9bab60032545942"||
-    req.body.form_id ==="65a7cf31682d210027cca007"){
+    req.body.form_id ==="65a7cf31682d210027cca007"||
+    req.body.responseObject && req.body.responseObject.riskScore
+  ){
     
-      console.log("Deposits Farmers from backend-->")
+      
 
       const farmer = new Farmer({
         form_id:new mongoose.Types.ObjectId(req.body.form_id),
@@ -176,10 +180,51 @@ const createResponse = asyncHandler(async (req,res)=>{
   
        }) 
 
-      /* const createdFarmer =*/ await retailerFarmer.save()
+       await retailerFarmer.save()
+
+       console.log("WHAT IS REQ.BODY WHEN ADDING A NEW FARMER...",req.body)
+
+      /*THIS IS PROBABLY WHERE A REGULAR FARMER IS BEING ADDED - SO I AM ADDING SMS SENDING HERE */
+
+      if(req.body.responseObject && (req.body.responseObject.phone||req.body.responseObject.phoneNumber) ){
+
+     
+            const SendchampConstructor = Sendchamp.default || Sendchamp;
+            const sendchamp = new SendchampConstructor({
+              mode: "live",
+              publicKey:process.env.REACT_APP_SENDCHAMP_ACCESS_KEY,
+                url: 'https://api.sendchamp.com/api/v1',
+            });
+            const sms = sendchamp.SMS;
+            const options = {
+              to: ["2348183763331"/**replace with req.body.phone */],
+              message: "Welcome to Ufarmx!Welcome to Ufarmx!  We’ve set up your account and you’re all ready to get started. Over the coming days, we’ll share updates and best practices to help you make the most of your experience on the platform. Together, we can create meaningful impact—unlocking opportunities, building trust, and ensuring that farmers have the support they need to grow.",
+              sender_name: "Sendchamp",
+              route: "DND_NG",
+            };
+            
+            async function sendSmsAsync() {
+                try {
+                    const response = await sms.send(options);
+                    console.log("SUCCESS RESPONSE:=====>", response);
+                } catch (error) {
+                    console.error("FULL SENDCHAMP ERROR OBJECT:=====>", error);
+                    if (error.response) {
+                        console.error("HTTP Status Code:", error.response.status);
+                        // console.error("HTTP Response Data:", error.response.data);
+                    }
+                }
+            }
+            sendSmsAsync();
+       
+
+                  
+
+      }
+    
 
 
-
+      /*THIS IS PROBABLY WHERE A REGULAR FARMER IS BEING ADDED - SO I AM ADDING SMS SENDING HERE - END */
 
    }
 

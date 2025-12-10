@@ -78,7 +78,7 @@ const farmersSchema =  mongoose.Schema({
         password:{type:String ,required:false,default:0},
         OriginalResponseId:{type:mongoose.Schema.Types.ObjectId,required:false, ref:'responsesdbs'},
 
-},{timestamps:true /*you want a createdAt? you add timestamps:true*/})
+},{timestamps:true,strict:false /*you want a createdAt? you add timestamps:true*/})
 
 
 const Farmers = mongoose.model('Farmers',farmersSchema)
@@ -88,9 +88,6 @@ const Farmers = mongoose.model('Farmers',farmersSchema)
  N.B MongoDB uses mongoose ORM/ODM unlinke SQL databases cuz
  sql databases come with a structure that you put in through a GUI
  
- coming back a year later.. this statement is not exactly true
- 
- SQL HAS ITS OWN ORM
  
  */
 

@@ -140,8 +140,8 @@ console.log(" last 3 requests is --->",requests)
 const createRequest = asyncHandler(async (req, res) => {
     const { 
         totalAmount, paymentDueDate, approvedDate, paymentTerms,
-        unitQuantity, firstName, lastName, phone, locationName, 
-        _id, user_id,
+        unitQuantity, farmerName, phone, locationName, 
+        product_id, user_id,
     } = req.body;
 
     const request = new Request({
@@ -151,11 +151,11 @@ const createRequest = asyncHandler(async (req, res) => {
         approvedDate: approvedDate,
         paymentTerms: paymentTerms,
         quantity: unitQuantity, 
-        farmerName: firstName && lastName ? `${firstName} ${lastName}` : "No Name Provided",
+        farmerName: farmerName,
         
         phone_number: phone,
         location: locationName,
-        productId: _id, 
+        products:[product_id], 
         farmerId: user_id,
         paymentsMade: []
     });
